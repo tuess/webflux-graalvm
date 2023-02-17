@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.graalvm.buildtools.native' version '0.9.18'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '19'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'io.r2dbc:r2dbc-pool'
+    implementation 'dev.miku:r2dbc-mysql:0.8.2.RELEASE'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+graalvmNative {
+    binaries.main {
+        buildArgs.add('--no-fallback')
+        buildArgs.add('-H:+ReportExceptionStackTraces')
+        buildArgs.add('--initialize-at-run-time=sun.net.dns.ResolverConfigurationImpl')
+        buildArgs.add('-H:DynamicProxyConfigurationFiles=D:/Desktop/workgroup/demo/demo/src/main/resources/META-INF/native-image/proxy-config.json')
+        buildArgs.add('-H:JNIConfigurationFiles=D:/Desktop/workgroup/demo/demo/src/main/resources/META-INF/native-image/jni-config.json')
+        buildArgs.add('-H:ReflectionConfigurationFiles=D:/Desktop/workgroup/demo/demo/src/main/resources/META-INF/native-image/reflect-config.json')
+        buildArgs.add('-H:ResourceConfigurationFiles=D:/Desktop/workgroup/demo/demo/src/main/resources/META-INF/native-image/resource-config.json')
+        buildArgs.add('-H:SerializationConfigurationFiles=D:/Desktop/workgroup/demo/demo/src/main/resources/META-INF/native-image/serialization-config.json')
+    }
+}

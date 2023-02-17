@@ -1,0 +1,17 @@
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+
+@SpringBootApplication
+@EnableR2dbcRepositories
+public class DemoApplication {
+
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(DemoApplication.class).web(WebApplicationType.REACTIVE).run(args);
+    }
+
+}
